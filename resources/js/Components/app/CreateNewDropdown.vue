@@ -21,6 +21,7 @@
                     <MenuItem v-slot="{ active }">
                         <a
                             href="#"
+                            @click.prevent="showCreateFolderModal"
                             class="text-gray-700 block px-4 py-2 text-sm"
                         >
                             New Folder
@@ -41,7 +42,7 @@
                             href="#"
                             class="text-gray-700 block px-4 py-2 text-sm"
                         >
-                          Upload Folder
+                            Upload Folder
                         </a>
                     </MenuItem>
                     <!-- <FileUploadMenuItem />
@@ -54,7 +55,15 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
+import CreateFolderModal from "@/Components/app/CreateFolderModal.vue";
+
+const createFolderModal = ref(false);
+
+function showCreateFolderModal() {
+    createFolderModal.value = true;
+}
 </script>
 
 <style scoped></style>
