@@ -41,19 +41,22 @@
 </template>
 
 <script setup>
-import Modal from "@/Components/Modal.vue";
-import TextInput from "@/Components/TextInput.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
-import { useForm, usePage } from "@inertiajs/vue3";
-import SecondaryButton from "@/Components/SecondaryButton.vue";
+import Modal from "@/Components/Modal.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import SecondaryButton from "@/Components/SecondaryButton.vue";
+import TextInput from "@/Components/TextInput.vue";
+import { useForm, usePage } from "@inertiajs/vue3";
 import { nextTick, ref } from 'vue';
 
 
 const form = useForm({
     name: "",
+    parent_id: null,
 });
+
+const page = usePage();
 
 const folderNameInput = ref(null);
 
@@ -70,6 +73,7 @@ function onShow() {
 }
 
 function createFolder() {
+    form.parent_id = page.props.folder.id;
     form.post(route('folder.create'),{
         preserveScroll: true,
         onSuccess: () => {
