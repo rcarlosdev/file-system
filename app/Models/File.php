@@ -5,11 +5,13 @@ namespace App\Models;
 use Illuminate\Support\Str;
 use Kalnoy\Nestedset\NodeTrait;
 use App\Traits\HasCreatorAndUpdater;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class File extends Model
 {
@@ -23,6 +25,15 @@ class File extends Model
     public function parent(): BelongsTo
     {
         return $this->belongsTo(File::class, 'parent_id');
+    }
+
+    public function owner(): Attribute
+    {
+        return Attribute::make(
+            get: function (mixed $value, array $attributes) {
+                return $attributes['created_by'] == Auth::id() ? 'me' : $this->user->name;
+            }
+        );
     }
 
     public function isRoot(): bool
